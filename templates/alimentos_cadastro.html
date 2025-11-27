@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cadastrar Alimentos - Wellness</title>
+    <style>
+        body { font-family: Arial; background: #f5f5f5; margin: 0; padding: 0; }
+        .header { background: #2c5530; color: white; padding: 20px; text-align: center; }
+        .nav { background: #4a7c59; padding: 15px; text-align: center; }
+        .nav a { color: white; text-decoration: none; margin: 0 15px; padding: 10px; }
+        .nav a:hover { background: #2c5530; border-radius: 5px; }
+        .container { max-width: 800px; margin: 20px auto; padding: 20px; }
+        .form-card, .list-card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        input, button { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { background: #2c5530; color: white; border: none; cursor: pointer; font-size: 16px; grid-column: 1 / -1; }
+        button:hover { background: #4a7c59; }
+        .alimento-item { border-left: 4px solid #4a7c59; padding: 15px; margin-bottom: 15px; background: #f9f9f9; }
+        .alimento-nome { font-weight: bold; color: #2c5530; font-size: 18px; margin-bottom: 5px; }
+        .alimento-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 10px; }
+        .info-item { text-align: center; padding: 8px; background: white; border-radius: 5px; }
+        .info-label { font-size: 12px; color: #666; }
+        .info-value { font-weight: bold; color: #2c5530; }
+        .no-data { text-align: center; color: #666; padding: 20px; }
+        .links { text-align: center; margin-top: 20px; }
+        .links a { color: #2c5530; text-decoration: none; margin: 0 10px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Cadastrar Alimentos</h1>
+    </div>
+    
+    <div class="nav">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/perfil">Perfil</a>
+        <a href="/treino_registro">Treino</a>
+        <a href="/medidas_registro">Medidas</a>
+        <a href="/refeicoes_registro">Alimentação</a>
+        <a href="/objetivos">Objetivos</a>
+        <a href="/relatorios">Relatórios</a>
+        <a href="/logout">Sair</a>
+    </div>
+    
+    <div class="container">
+        <div class="form-card">
+            <h2>Novo Alimento</h2>
+            <form method="POST">
+                <input type="text" name="nome" placeholder="Nome do alimento" required>
+                
+                <div class="form-grid">
+                    <input type="number" step="0.1" name="calorias" placeholder="Calorias (por 100g)" required>
+                    <input type="number" step="0.1" name="proteina" placeholder="Proteína (g)" required>
+                    <input type="number" step="0.1" name="carboidratos" placeholder="Carboidratos (g)" required>
+                    <input type="number" step="0.1" name="gorduras" placeholder="Gorduras (g)" required>
+                </div>
+                
+                <button type="submit">Cadastrar Alimento</button>
+            </form>
+        </div>
+        
+        <div class="list-card">
+            <h2>Alimentos Cadastrados</h2>
+            {% if alimentos %}
+                {% for alimento in alimentos %}
+                <div class="alimento-item">
+                    <div class="alimento-nome">{{ alimento.nome }}</div>
+                    <div class="alimento-info">
+                        <div class="info-item">
+                            <div class="info-label">Calorias</div>
+                            <div class="info-value">{{ alimento.calorias }} kcal</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Proteína</div>
+                            <div class="info-value">{{ alimento.proteina }}g</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Carboidratos</div>
+                            <div class="info-value">{{ alimento.carboidratos }}g</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Gorduras</div>
+                            <div class="info-value">{{ alimento.gorduras }}g</div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-data">
+                    <p>Nenhum alimento cadastrado ainda</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="links">
+            <a href="/refeicoes_registro">Voltar para Refeições</a>
+            <a href="/dashboard">Voltar ao Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

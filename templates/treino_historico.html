@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Histórico de Treinos - Wellness</title>
+    <style>
+        body { font-family: Arial; background: #f5f5f5; margin: 0; padding: 0; }
+        .header { background: #2c5530; color: white; padding: 20px; text-align: center; }
+        .nav { background: #4a7c59; padding: 15px; text-align: center; }
+        .nav a { color: white; text-decoration: none; margin: 0 15px; padding: 10px; }
+        .nav a:hover { background: #2c5530; border-radius: 5px; }
+        .container { max-width: 1000px; margin: 20px auto; padding: 20px; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .treino-item { border-left: 4px solid #2c5530; padding-left: 15px; margin-bottom: 15px; }
+        .treino-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .treino-tipo { font-weight: bold; color: #2c5530; font-size: 18px; }
+        .treino-data { color: #666; }
+        .treino-details { color: #555; }
+        .no-data { text-align: center; color: #666; padding: 40px; }
+        .links { text-align: center; margin-top: 30px; }
+        .links a { background: #2c5530; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin: 0 10px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Histórico de Treinos</h1>
+    </div>
+    
+    <div class="nav">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/perfil">Perfil</a>
+        <a href="/treino_registro">Treino</a>
+        <a href="/medidas_registro">Medidas</a>
+        <a href="/refeicoes_registro">Alimentação</a>
+        <a href="/objetivos">Objetivos</a>
+        <a href="/relatorios">Relatórios</a>
+        <a href="/logout">Sair</a>
+    </div>
+    
+    <div class="container">
+        {% if treinos %}
+            <div class="card">
+                <h2>Seus Treinos Registrados</h2>
+                {% for treino in treinos|reverse %}
+                <div class="treino-item">
+                    <div class="treino-header">
+                        <span class="treino-tipo">{{ treino.tipo_treino }}</span>
+                        <span class="treino-data">{{ treino.data[:10] }}</span>
+                    </div>
+                    <div class="treino-details">
+                        <p><strong>Duração:</strong> {{ treino.duracao }} minutos</p>
+                        <p><strong>Intensidade:</strong> {{ treino.intensidade }}</p>
+                        {% if treino.observacoes %}
+                        <p><strong>Observações:</strong> {{ treino.observacoes }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="card">
+                <div class="no-data">
+                    <h3>Nenhum treino registrado ainda</h3>
+                    <p>Comece registrando seu primeiro treino!</p>
+                </div>
+            </div>
+        {% endif %}
+        
+        <div class="links">
+            <a href="/treino_registro">Registrar Novo Treino</a>
+            <a href="/exercicios_cadastro">Cadastrar Exercícios</a>
+            <a href="/dashboard">Voltar ao Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Relatórios - Wellness</title>
+    <style>
+        body { font-family: Arial; background: #f5f5f5; margin: 0; padding: 0; }
+        .header { background: #2c5530; color: white; padding: 20px; text-align: center; }
+        .nav { background: #4a7c59; padding: 15px; text-align: center; }
+        .nav a { color: white; text-decoration: none; margin: 0 15px; padding: 10px; }
+        .nav a:hover { background: #2c5530; border-radius: 5px; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 20px; }
+        .card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 25px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
+        .stat-item { text-align: center; padding: 20px; background: #f9f9f9; border-radius: 8px; }
+        .stat-value { font-size: 2em; font-weight: bold; color: #2c5530; margin: 10px 0; }
+        .stat-label { color: #666; }
+        .section-title { color: #2c5530; border-bottom: 2px solid #4a7c59; padding-bottom: 10px; margin-bottom: 20px; }
+        .no-data { text-align: center; color: #666; padding: 40px; }
+        .links { text-align: center; margin-top: 30px; }
+        .links a { background: #2c5530; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin: 0 10px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Relatórios e Estatísticas</h1>
+    </div>
+    
+    <div class="nav">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/perfil">Perfil</a>
+        <a href="/treino_registro">Treino</a>
+        <a href="/medidas_registro">Medidas</a>
+        <a href="/refeicoes_registro">Alimentação</a>
+        <a href="/objetivos">Objetivos</a>
+        <a href="/relatorios">Relatórios</a>
+        <a href="/logout">Sair</a>
+    </div>
+    
+    <div class="container">
+        <div class="card">
+            <h2 class="section-title">Visão Geral</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">{{ treinos|length }}</div>
+                    <div class="stat-label">Treinos Realizados</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">{{ medidas|length }}</div>
+                    <div class="stat-label">Medidas Registradas</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">{{ refeicoes|length }}</div>
+                    <div class="stat-label">Refeições Registradas</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">
+                        {% if medidas %}
+                            {{ (medidas|last).peso }} kg
+                        {% else %}
+                            -
+                        {% endif %}
+                    </div>
+                    <div class="stat-label">Peso Atual</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2 class="section-title">Resumo de Treinos</h2>
+            {% if treinos %}
+                <p><strong>Total de Treinos:</strong> {{ treinos|length }}</p>
+                <p><strong>Último Treino:</strong> {{ (treinos|last).data[:10] }} - {{ (treinos|last).tipo_treino }}</p>
+                <p><strong>Tipos de Treino Mais Frequentes:</strong>
+                    {% set tipos = {} %}
+                    {% for treino in treinos %}
+                        {% set _ = tipos.update({treino.tipo_treino: tipos.get(treino.tipo_treino, 0) + 1}) %}
+                    {% endfor %}
+                    {% for tipo, count in tipos.items() %}
+                        {{ tipo }}({{ count }}){% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+            {% else %}
+                <div class="no-data">
+                    <p>Nenhum treino registrado ainda</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="card">
+            <h2 class="section-title">Evolução de Medidas</h2>
+            {% if medidas %}
+                <p><strong>Primeira Medida:</strong> {{ (medidas|first).data[:10] }} - {{ (medidas|first).peso }} kg</p>
+                <p><strong>Última Medida:</strong> {{ (medidas|last).data[:10] }} - {{ (medidas|last).peso }} kg</p>
+                {% if medidas|length > 1 %}
+                    <p><strong>Variação de Peso:</strong> 
+                        {% set variacao = (medidas|last).peso|float - (medidas|first).peso|float %}
+                        {% if variacao > 0 %}
+                            +{{ variacao }} kg
+                        {% else %}
+                            {{ variacao }} kg
+                        {% endif %}
+                    </p>
+                {% endif %}
+            {% else %}
+                <div class="no-data">
+                    <p>Nenhuma medida registrada ainda</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="card">
+            <h2 class="section-title">Resumo Alimentar</h2>
+            {% if refeicoes %}
+                <p><strong>Total de Refeições:</strong> {{ refeicoes|length }}</p>
+                <p><strong>Tipos de Refeição:</strong>
+                    {% set tipos_ref = {} %}
+                    {% for ref in refeicoes %}
+                        {% set _ = tipos_ref.update({ref.tipo_refeicao: tipos_ref.get(ref.tipo_refeicao, 0) + 1}) %}
+                    {% endfor %}
+                    {% for tipo, count in tipos_ref.items() %}
+                        {{ tipo }}({{ count }}){% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+                <p><strong>Calorias Totais Registradas:</strong>
+                    {% set total_calorias = 0 %}
+                    {% for ref in refeicoes %}
+                        {% if ref.calorias %}
+                            {% set total_calorias = total_calorias + ref.calorias|float %}
+                        {% endif %}
+                    {% endfor %}
+                    {{ total_calorias|round(1) }} kcal
+                </p>
+            {% else %}
+                <div class="no-data">
+                    <p>Nenhuma refeição registrada ainda</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="links">
+            <a href="/dashboard">Voltar ao Dashboard</a>
+            <a href="/treino_registro">Registrar Treino</a>
+            <a href="/medidas_registro">Registrar Medidas</a>
+        </div>
+    </div>
+</body>
+</html>

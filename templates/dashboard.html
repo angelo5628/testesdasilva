@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - Wellness</title>
+    <style>
+        body { font-family: Arial; background: #f5f5f5; margin: 0; padding: 0; }
+        .header { background: #2c5530; color: white; padding: 20px; text-align: center; }
+        .nav { background: #4a7c59; padding: 15px; text-align: center; }
+        .nav a { color: white; text-decoration: none; margin: 0 15px; padding: 10px; }
+        .nav a:hover { background: #2c5530; border-radius: 5px; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center; }
+        .card h3 { color: #2c5530; margin-top: 0; }
+        .card a { display: inline-block; background: #2c5530; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 10px; }
+        .card a:hover { background: #4a7c59; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Bem-vindo, {{ user_name }}!</h1>
+        <p>Seu diário de wellness pessoal</p>
+    </div>
+    
+    <div class="nav">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/perfil">Perfil</a>
+        <a href="/treino_registro">Treino</a>
+        <a href="/medidas_registro">Medidas</a>
+        <a href="/refeicoes_registro">Alimentação</a>
+        <a href="/objetivos">Objetivos</a>
+        <a href="/relatorios">Relatórios</a>
+        <a href="/logout">Sair</a>
+    </div>
+    
+    <div class="container">
+        <h2>Dashboard Principal</h2>
+        <p>Gerencie sua saúde e fitness de forma simples.</p>
+        
+        <div class="grid">
+            <div class="card">
+                <h3>💪 Treino</h3>
+                <p>Registre seus treinos e exercícios</p>
+                <a href="/treino_registro">Novo Treino</a>
+                <a href="/treino_historico" style="background: #666; margin-left: 10px;">Histórico</a>
+            </div>
+            
+            <div class="card">
+                <h3>📏 Medidas</h3>
+                <p>Acompanhe suas medidas corporais</p>
+                <a href="/medidas_registro">Nova Medida</a>
+                <a href="/medidas_historico" style="background: #666; margin-left: 10px;">Histórico</a>
+            </div>
+            
+            <div class="card">
+                <h3>🍎 Alimentação</h3>
+                <p>Controle sua dieta e refeições</p>
+                <a href="/refeicoes_registro">Nova Refeição</a>
+                <a href="/diario_alimentar" style="background: #666; margin-left: 10px;">Diário</a>
+            </div>
+            
+            <div class="card">
+                <h3>🎯 Objetivos</h3>
+                <p>Defina e acompanhe suas metas</p>
+                <a href="/objetivos">Ver Objetivos</a>
+            </div>
+            
+            <div class="card">
+                <h3>😴 Sono & Água</h3>
+                <p>Registre sono e consumo de água</p>
+                <a href="/sono_registro">Registrar Sono</a>
+                <a href="/agua_registro" style="background: #666; margin-left: 10px;">Registrar Água</a>
+            </div>
+            
+            <div class="card">
+                <h3>📊 Relatórios</h3>
+                <p>Veja seus progressos e estatísticas</p>
+                <a href="/relatorios">Ver Relatórios</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

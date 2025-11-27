@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Objetivos - Wellness</title>
+    <style>
+        body { font-family: Arial; background: #f5f5f5; margin: 0; padding: 0; }
+        .header { background: #2c5530; color: white; padding: 20px; text-align: center; }
+        .nav { background: #4a7c59; padding: 15px; text-align: center; }
+        .nav a { color: white; text-decoration: none; margin: 0 15px; padding: 10px; }
+        .nav a:hover { background: #2c5530; border-radius: 5px; }
+        .container { max-width: 800px; margin: 20px auto; padding: 20px; }
+        .form-card, .list-card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        input, select, textarea, button { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { background: #2c5530; color: white; border: none; cursor: pointer; font-size: 16px; }
+        button:hover { background: #4a7c59; }
+        .objetivo-item { border-left: 4px solid #2c5530; padding: 15px; margin-bottom: 15px; background: #f9f9f9; }
+        .objetivo-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .objetivo-descricao { font-weight: bold; color: #2c5530; font-size: 18px; }
+        .objetivo-meta { color: #666; }
+        .objetivo-concluido { border-left-color: #4CAF50; background: #f0f9f0; }
+        .concluido-badge { background: #4CAF50; color: white; padding: 5px 10px; border-radius: 15px; font-size: 12px; }
+        .no-data { text-align: center; color: #666; padding: 40px; }
+        .links { text-align: center; margin-top: 20px; }
+        .links a { color: #2c5530; text-decoration: none; margin: 0 10px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Meus Objetivos</h1>
+    </div>
+    
+    <div class="nav">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/perfil">Perfil</a>
+        <a href="/treino_registro">Treino</a>
+        <a href="/medidas_registro">Medidas</a>
+        <a href="/refeicoes_registro">Alimentação</a>
+        <a href="/objetivos">Objetivos</a>
+        <a href="/relatorios">Relatórios</a>
+        <a href="/logout">Sair</a>
+    </div>
+    
+    <div class="container">
+        <div class="form-card">
+            <h2>Novo Objetivo</h2>
+            <form method="POST">
+                <textarea name="descricao" placeholder="Descrição do objetivo (ex: Perder 5kg, Correr 10km, etc.)" rows="3" required></textarea>
+                
+                <select name="tipo_objetivo" required>
+                    <option value="">Selecione o tipo de objetivo</option>
+                    <option value="Peso">Peso</option>
+                    <option value="Medidas">Medidas</option>
+                    <option value="Treino">Treino</option>
+                    <option value="Alimentação">Alimentação</option>
+                    <option value="Geral">Geral</option>
+                </select>
+                
+                <input type="date" name="data_limite" required>
+                
+                <button type="submit">Adicionar Objetivo</button>
+            </form>
+        </div>
+        
+        <div class="list-card">
+            <h2>Meus Objetivos</h2>
+            {% if objetivos %}
+                {% for objetivo in objetivos %}
+                <div class="objetivo-item {% if objetivo.concluido %}objetivo-concluido{% endif %}">
+                    <div class="objetivo-header">
+                        <span class="objetivo-descricao">{{ objetivo.descricao }}</span>
+                        {% if objetivo.concluido %}
+                        <span class="concluido-badge">Concluído</span>
+                        {% endif %}
+                    </div>
+                    <div class="objetivo-meta">
+                        <p><strong>Tipo:</strong> {{ objetivo.tipo_objetivo }}</p>
+                        <p><strong>Data Limite:</strong> {{ objetivo.data_limite }}</p>
+                        <p><strong>Criado em:</strong> {{ objetivo.data_criacao[:10] }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-data">
+                    <h3>Nenhum objetivo definido ainda</h3>
+                    <p>Comece definindo seu primeiro objetivo!</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="links">
+            <a href="/dashboard">Voltar ao Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

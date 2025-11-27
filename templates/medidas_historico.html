@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Histórico de Medidas - Wellness</title>
+    <style>
+        body { font-family: Arial; background: #f5f5f5; margin: 0; padding: 0; }
+        .header { background: #2c5530; color: white; padding: 20px; text-align: center; }
+        .nav { background: #4a7c59; padding: 15px; text-align: center; }
+        .nav a { color: white; text-decoration: none; margin: 0 15px; padding: 10px; }
+        .nav a:hover { background: #2c5530; border-radius: 5px; }
+        .container { max-width: 1000px; margin: 20px auto; padding: 20px; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .medida-item { border-left: 4px solid #2c5530; padding: 15px; margin-bottom: 15px; background: #f9f9f9; }
+        .medida-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .medida-data { color: #666; font-weight: bold; }
+        .medida-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+        .detail-item { text-align: center; padding: 10px; background: white; border-radius: 5px; }
+        .detail-label { font-size: 12px; color: #666; }
+        .detail-value { font-weight: bold; color: #2c5530; }
+        .no-data { text-align: center; color: #666; padding: 40px; }
+        .links { text-align: center; margin-top: 30px; }
+        .links a { background: #2c5530; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin: 0 10px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Histórico de Medidas</h1>
+    </div>
+    
+    <div class="nav">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/perfil">Perfil</a>
+        <a href="/treino_registro">Treino</a>
+        <a href="/medidas_registro">Medidas</a>
+        <a href="/refeicoes_registro">Alimentação</a>
+        <a href="/objetivos">Objetivos</a>
+        <a href="/relatorios">Relatórios</a>
+        <a href="/logout">Sair</a>
+    </div>
+    
+    <div class="container">
+        {% if medidas %}
+            <div class="card">
+                <h2>Suas Medidas Registradas</h2>
+                {% for medida in medidas|reverse %}
+                <div class="medida-item">
+                    <div class="medida-header">
+                        <span class="medida-data">{{ medida.data[:10] }}</span>
+                    </div>
+                    <div class="medida-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Peso</div>
+                            <div class="detail-value">{{ medida.peso }} kg</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Altura</div>
+                            <div class="detail-value">{{ medida.altura }} cm</div>
+                        </div>
+                        {% if medida.braco_esquerdo %}
+                        <div class="detail-item">
+                            <div class="detail-label">Braço Esq.</div>
+                            <div class="detail-value">{{ medida.braco_esquerdo }} cm</div>
+                        </div>
+                        {% endif %}
+                        {% if medida.braco_direito %}
+                        <div class="detail-item">
+                            <div class="detail-label">Braço Dir.</div>
+                            <div class="detail-value">{{ medida.braco_direito }} cm</div>
+                        </div>
+                        {% endif %}
+                        {% if medida.cintura %}
+                        <div class="detail-item">
+                            <div class="detail-label">Cintura</div>
+                            <div class="detail-value">{{ medida.cintura }} cm</div>
+                        </div>
+                        {% endif %}
+                        {% if medida.quadril %}
+                        <div class="detail-item">
+                            <div class="detail-label">Quadril</div>
+                            <div class="detail-value">{{ medida.quadril }} cm</div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="card">
+                <div class="no-data">
+                    <h3>Nenhuma medida registrada ainda</h3>
+                    <p>Comece registrando suas primeiras medidas!</p>
+                </div>
+            </div>
+        {% endif %}
+        
+        <div class="links">
+            <a href="/medidas_registro">Registrar Novas Medidas</a>
+            <a href="/dashboard">Voltar ao Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>
